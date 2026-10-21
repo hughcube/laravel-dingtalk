@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: hugh.li
@@ -8,8 +9,8 @@
 
 namespace HughCube\Laravel\DingTalk\Tests;
 
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use HughCube\Laravel\DingTalk\DingTalk;
@@ -47,7 +48,7 @@ class TestCase extends OrchestraTestCase
     {
         /** @var Repository $appConfig */
         $appConfig = $app['config'];
-        $appConfig->set(DingTalk::getFacadeAccessor(), (require dirname(__DIR__).'/config/config.php'));
+        $appConfig->set(DingTalk::getFacadeAccessor(), require dirname(__DIR__).'/config/config.php');
     }
 
     protected function setUp(): void

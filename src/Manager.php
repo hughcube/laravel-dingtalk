@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: hugh.li
@@ -51,7 +52,7 @@ class Manager
      *
      * @return mixed
      */
-    protected function getConfig(string|null $key = null, $default = null): mixed
+    protected function getConfig(?string $key = null, $default = null): mixed
     {
         /** @var Repository $config */
         $config = $this->getContainer()->make('config');
@@ -70,7 +71,7 @@ class Manager
      *
      * @return array
      */
-    protected function getConfigWithDefaults(string|null $key = null, ?array $default = []): array
+    protected function getConfigWithDefaults(?string $key = null, ?array $default = []): array
     {
         return array_replace_recursive(
             $this->getConfig($key, $default),
@@ -85,7 +86,7 @@ class Manager
      *
      * @return Robot
      */
-    public function robot(string|null $name = null): Robot
+    public function robot(?string $name = null): Robot
     {
         $name = $name ?? 'default';
         if (!isset($this->robots[$name])) {
