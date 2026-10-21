@@ -57,16 +57,75 @@ $ composer require hughcube/laravel-dingtalk -vvv
     'robots' => [
         'default' => [
             'enabled' => env('DING_TALK_ROBOT_ENABLED', true),
+
+            /**
+             * The full webhook url, e.g. https://oapi.dingtalk.com/robot/send?access_token=xxx
+             */
+            'url' => env('DING_TALK_ROBOT_URL', ''),
+
+            /**
+             * The robot access_token, the default url will be generated automatically
+             */
             'access_token' => env('DING_TALK_ROBOT_ACCESS_TOKEN', ''),
+
+            /**
+             * The robot secret, timestamp and sign will be appended automatically
+             */
             'secret' => env('DING_TALK_ROBOT_SECRET', ''),
         ]
     ]
 ]
 ```
 
+Configure either `url` or `access_token`, they are interchangeable:
+
+```dotenv
+# option 1: the full webhook url
+DING_TALK_ROBOT_URL=https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxx
+
+# option 2: only the access_token
+DING_TALK_ROBOT_ACCESS_TOKEN=xxxxxxxx
+```
+
+When both are configured the `url` wins. If the robot has a secret (`DING_TALK_ROBOT_SECRET=SECxxxxxxxx`),
+`timestamp` and `sign` are appended to the url automatically in both modes.
+
 ## Usage
 
-TODO
+```php
+use HughCube\Laravel\DingTalk\DingTalk;
+use HughCube\Laravel\DingTalk\Robot\Messages\Text;
+
+DingTalk::robot()->send(new Text('hello world'));
+
+// multi robot
+DingTalk::robot('other')->send(new Text('hello world'));
+```
+
+### Log channel
+
+```php
+'channels' => [
+    'dingtalk' => [
+        'driver'  => 'monolog',
+        'handler' => HughCube\Laravel\DingTalk\Log\Handler::class,
+        'with'    => [
+            'robot'   => null, // the robot name, null means "default"
+            'enabled' => env('DING_TALK_ROBOT_ENABLED', true),
+            'level'   => 'warning',
+        ],
+    ],
+],
+```
+
+### Test
+
+```shell
+$ composer test
+
+# integration test against a real robot (optional)
+$ DING_TALK_ROBOT_URL='https://oapi.dingtalk.com/robot/send?access_token=xxx' DING_TALK_ROBOT_SECRET='SECxxx' ./vendor/bin/phpunit
+```
 
 ## Contributing
 

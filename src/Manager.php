@@ -12,7 +12,6 @@ use HughCube\Laravel\DingTalk\Robot\Client as Robot;
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Container\Container as ContainerContract;
 
 class Manager
@@ -27,7 +26,7 @@ class Manager
     /**
      * @param ContainerContract|null $container
      */
-    public function __construct(Container $container = null)
+    public function __construct(?ContainerContract $container = null)
     {
         $this->container = $container;
     }
@@ -37,10 +36,6 @@ class Manager
      */
     protected function getContainer(): ContainerContract
     {
-        if (is_callable($this->container)) {
-            return call_user_func($this->container);
-        }
-
         if (null === $this->container) {
             return IlluminateContainer::getInstance();
         }

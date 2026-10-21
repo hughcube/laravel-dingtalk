@@ -18,7 +18,7 @@ class Handler extends AbstractProcessingHandler
     /**
      * @var null|string
      */
-    protected null|string $robot = null;
+    protected ?string $robot = null;
 
     /**
      * @var bool
@@ -32,6 +32,11 @@ class Handler extends AbstractProcessingHandler
         parent::__construct($level, $bubble);
     }
 
+    /**
+     * Monolog 1/2 passes an array, Monolog 3 passes a LogRecord, both support array access.
+     *
+     * @param array|\Monolog\LogRecord $record
+     */
     protected function write($record): void
     {
         if (!$this->enabled) {
@@ -40,7 +45,7 @@ class Handler extends AbstractProcessingHandler
 
         /** Prevent loop errors */
         try {
-            $message = mb_strcut($record['formatted'], 0, 15000);
+            $message = mb_strcut((string) $record['formatted'], 0, 15000);
             DingTalk::robot($this->robot)->send(new Text($message));
         } catch (\Throwable $exception) {
         }
