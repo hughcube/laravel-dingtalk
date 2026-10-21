@@ -1,0 +1,16 @@
+# StyleCI configuration.
+# https://docs.styleci.io/standalone-php
+#
+# 显式锁定规则集与目标 PHP 版本: 不写这个文件时会走 StyleCI 的默认配置
+# (preset: recommended + 跟随最新 PHP 版本), 默认值升级会导致历史代码突然报错.
+preset: recommended
+risky: false
+version: 8.4
+
+finder:
+  exclude:
+    - "vendor"
+  name: "*.php"
+  not-name:
+    - "*.blade.php"
+    - "_ide_helper.php"
