@@ -29,7 +29,7 @@ class DingTalk extends LazyFacade
      */
     public static function getFacadeAccessor(): string
     {
-        return 'dingTalk';
+        return 'dingtalk';
     }
 
     protected static function registerServiceProvider($app)

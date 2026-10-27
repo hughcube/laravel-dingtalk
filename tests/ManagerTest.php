@@ -45,7 +45,7 @@ class ManagerTest extends TestCase
 
     public function testCustomRobot()
     {
-        $this->app['config']->set('dingTalk.robots.custom', [
+        $this->app['config']->set('dingtalk.robots.custom', [
             'url' => 'https://example.com/robot/send?access_token=custom-token',
         ]);
 
@@ -57,8 +57,8 @@ class ManagerTest extends TestCase
 
     public function testRobotsAreIsolated()
     {
-        $this->app['config']->set('dingTalk.robots.a', ['access_token' => 'token-a']);
-        $this->app['config']->set('dingTalk.robots.b', ['access_token' => 'token-b']);
+        $this->app['config']->set('dingtalk.robots.a', ['access_token' => 'token-a']);
+        $this->app['config']->set('dingtalk.robots.b', ['access_token' => 'token-b']);
 
         $this->assertSame('token-a', $this->parseQuery(DingTalk::robot('a')->getRequestUrl())['access_token']);
         $this->assertSame('token-b', $this->parseQuery(DingTalk::robot('b')->getRequestUrl())['access_token']);
@@ -67,8 +67,8 @@ class ManagerTest extends TestCase
 
     public function testDefaultsAppliedToRobot()
     {
-        $this->app['config']->set('dingTalk.defaults', ['secret' => 'global-secret']);
-        $this->app['config']->set('dingTalk.robots.default', ['access_token' => 'token-a']);
+        $this->app['config']->set('dingtalk.defaults', ['secret' => 'global-secret']);
+        $this->app['config']->set('dingtalk.robots.default', ['access_token' => 'token-a']);
 
         $query = $this->parseQuery(DingTalk::robot()->getRequestUrl());
 
@@ -89,7 +89,7 @@ class ManagerTest extends TestCase
 
     public function testSendWithUrlFromConfig()
     {
-        $this->app['config']->set('dingTalk.robots.default', [
+        $this->app['config']->set('dingtalk.robots.default', [
             'url'  => 'https://example.com/robot/send?access_token=config-token',
             'http' => ['handler' => $this->mockHandler([
                 $this->jsonResponse(['errcode' => 0, 'errmsg' => 'ok']),
@@ -104,7 +104,7 @@ class ManagerTest extends TestCase
 
     public function testManagerWithContainer()
     {
-        $this->app['config']->set('dingTalk.robots.default', ['access_token' => 'token-a']);
+        $this->app['config']->set('dingtalk.robots.default', ['access_token' => 'token-a']);
 
         $manager = new Manager($this->app);
 
@@ -113,10 +113,17 @@ class ManagerTest extends TestCase
 
     public function testManagerWithGlobalContainer()
     {
-        $this->app['config']->set('dingTalk.robots.default', ['access_token' => 'token-a']);
+        $this->app['config']->set('dingtalk.robots.default', ['access_token' => 'token-a']);
 
         $manager = new Manager();
 
         $this->assertSame('token-a', $this->parseQuery($manager->robot()->getRequestUrl())['access_token']);
+    }
+
+    public function testLegacyConfigFallback()
+    {
+        $this->app['config']->set('dingTalk.robots.legacy', ['access_token' => 'legacy-token']);
+
+        $this->assertSame('legacy-token', $this->parseQuery(DingTalk::robot('legacy')->getRequestUrl())['access_token']);
     }
 }

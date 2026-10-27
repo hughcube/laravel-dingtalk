@@ -25,7 +25,7 @@ class LogHandlerTest extends TestCase
     {
         $config['url'] = $config['url'] ?? 'https://example.com/robot/send?access_token=log-token';
         $config['http'] = ['handler' => $this->mockHandler($queue)];
-        $this->app['config']->set('dingTalk.robots.default', $config);
+        $this->app['config']->set('dingtalk.robots.default', $config);
 
         return new Logger('test', [new Handler(null, $enabled, Logger::DEBUG)]);
     }

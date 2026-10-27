@@ -58,9 +58,15 @@ class Manager
         $config = $this->getContainer()->make('config');
 
         $namespace = DingTalk::getFacadeAccessor();
-        $key = empty($key) ? $namespace : "$namespace.$key";
+        $primaryKey = empty($key) ? $namespace : "$namespace.$key";
+        $legacyKey = empty($key) ? 'dingTalk' : "dingTalk.$key";
 
-        return $config->get($key, $default);
+        $value = $config->get($primaryKey);
+        if (null !== $value) {
+            return $value;
+        }
+
+        return $config->get($legacyKey, $default);
     }
 
     /**

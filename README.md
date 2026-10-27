@@ -1,4 +1,4 @@
-<h1 align="center"> laravel dingTalk </h1>
+<h1 align="center"> laravel dingtalk </h1>
 
 <p>
     <a href="https://github.com/hughcube-php/laravel-dingtalk/actions?query=workflow%3ATest">
